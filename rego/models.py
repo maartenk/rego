@@ -13,19 +13,36 @@ class User(db.Model):
         'Role',
         backref=db.backref('roles', lazy=True)
     )
-        
+
+    organizations = db.relationship(
+        'Organization',
+        secondary=organizations,
+        lazy='subquery',
+        backref=db.backref('users', lazy=True)
+    )
+    
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-
-class OrgAdmin(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
-    organization_id = db.Column(db.Integer, primary_key=True)
 
 class Organization(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
+org_admin = db.Table(
+    'org_admins', 
+    db.Column('user_id',
+              db.Integer,
+              db.ForeignKey('user.id'),
+              primary_key=True
+    )
+    db.Column('organization_id',
+              db.Integer,
+              db.ForeignKey('organization.id'),
+              primary_key=True
+    )
+)
+    
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(254))
@@ -44,7 +61,9 @@ class ContactType(db.Model):
 
 class Entity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    entity_id = db.Column(db.String(1024), unique=True)
-    data = db.Column(db.Text)
-
+    data = db.Column(db.JSON)
     
+    @property
+    def entity_id(self):
+        return self.data['sub']    
+
