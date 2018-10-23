@@ -8,6 +8,9 @@ setup(
     zip_safe=False,
     install_requires=[
         'flask',
-        'flask_sqlalchemy'
+        'flask_sqlalchemy',
+        'flask_login',
+        'flask_bootstrap',
+        'flask_wtf'
     ],
 )

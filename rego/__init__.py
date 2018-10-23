@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap
 
 db = SQLAlchemy()
 
@@ -10,7 +11,8 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='secret_here!',
     )
-
+    Bootstrap(app)
+    
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:
@@ -28,5 +30,9 @@ def create_app(test_config=None):
     with app.app_context():
         db.init_app(app)
         db.create_all()
+
+    from . import fop
+    app.register_blueprint(fop.bp)
+
         
     return app
