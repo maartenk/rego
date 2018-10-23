@@ -1,7 +1,9 @@
 import os
 
 from flask import Flask
-from rego.models import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -9,10 +11,6 @@ def create_app(test_config=None):
         SECRET_KEY='secret_here!',
         DATABASE=os.path.join(app.instance_path, 'rego.sqlite')
     )
-
-    db.init_app(app)
-
-    db.create_all()
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -24,8 +22,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/hello')
+    @app.route('/')
     def hello():
         return 'Hello world'
 
+    from rego.models import db
+
+    db.init_app(app)
+    
     return app
