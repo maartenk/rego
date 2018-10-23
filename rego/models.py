@@ -5,7 +5,15 @@ class User(db.Model):
     name = db.Column(db.String(255))
     password_hash = db.Column(db.String)
     email = db.Column(db.String(254))
-
+    role_id = db.Column(
+        db.Integer, db.ForeignKey('contact_type.id'), nullable=False
+    )
+                              
+    role = db.relationship(
+        'Role',
+        backref=db.backref('roles', lazy=True)
+    )
+        
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
