@@ -22,7 +22,7 @@ class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(254))
     contact_type_id = db.Column(
-        db.Integer, db.ForeignKey('contact_type.it'), nullable=False
+        db.Integer, db.ForeignKey('contact_type.id'), nullable=False
     )
                               
     contact_type = db.relationship(

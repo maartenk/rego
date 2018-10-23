@@ -22,12 +22,15 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/')
+    @app.route('/hello')
     def hello():
         return 'Hello world'
 
     from rego.models import db
 
-    db.init_app(app)
-    
+
+    with app.app_context():
+        db.init_app(app)
+        db.create_all()
+        
     return app
