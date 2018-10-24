@@ -1,1 +1,19 @@
+# Config file for automatic testing at travis-ci.org
+
+sudo: false  # http://docs.travis-ci.com/user/migrating-from-legacy/
 language: python
+
+python:
+  - 3.4
+  - 3.5
+  - 3.6
+  - 3.7
+  
+install: pip install -e
+
+before_script:
+  - export FLASK_APP="rego"
+  - export FLASK_ENV=development
+  - export FLASK_DEBUG=1
+
+script: flask run
