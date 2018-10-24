@@ -31,8 +31,9 @@ def create_app(test_config=None):
         db.init_app(app)
         db.create_all()
 
-    from . import fop
+    from . import fop, orgadm, api
     app.register_blueprint(fop.bp)
-
+    app.register_blueprint(orgadm.bp)
+    app.register_blueprint(api.bp)
         
     return app
